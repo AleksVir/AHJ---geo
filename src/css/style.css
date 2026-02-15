@@ -1,0 +1,145 @@
+* {
+  margin: auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #1fe8e2;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+/*input-field*/
+
+.board-container {
+  width: 500px;
+}
+
+h3.board__title {
+  margin-top: 20px;
+}
+
+.input-wrapper {
+  position: fixed;
+  bottom: 30px;
+  width: 500px;
+  height: 40px;
+  background-color: aliceblue;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid gray;
+}
+
+input.text__field {
+  margin-left: 0px;
+  padding: 0 5px;
+  outline: none;
+  border: none;
+  width: 80%;
+  height: 38px;
+  background-color: aliceblue;
+}
+
+button.audio__btn,
+.video__btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+}
+
+span.tooltip-active,.geo_tooltip-active {
+  color: red;
+  margin-top: 5px;
+}
+
+.modal {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  top: -1000;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: scroll;
+  padding: 60px 15px;
+}
+
+.modal-content {
+  width: 340px;
+  height: 200px;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-active {
+  position: fixed;
+  top: 0;
+  visibility: visible;
+  opacity: 1;
+  transition: 0.3s;
+  text-align: center;
+}
+
+
+input.input__coords {
+  width: 300px;
+  height: 40px;
+  padding: 5px;
+}
+
+.modal__add-btn {
+  background-color: rgb(61, 92, 149);
+  outline: 1px solid blue;
+  border-radius: 8px;
+  width: 80px;
+  height: 25px;
+  cursor: pointer;
+  color: white;
+}
+
+
+.article-box {
+  background-color: beige;
+  border: 1px solid gray;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.article__header {
+  margin-left: 70%;
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.article__content {
+    margin: 10px;
+
+}
+
+span.article__post {
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+.article__footer {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
