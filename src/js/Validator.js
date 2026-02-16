@@ -1,64 +1,58 @@
 export default class Validator {
   constructor(inputEl) {
     this.inputEl = inputEl;
-    this.result = [];
   }
 
   verify() {
     const arr = this.getValuesArr();
 
-    const validArr = this.getAllowableValue(arr);
+    if (arr.length !== 2) {
+      this.showTooltip("Введите два параметра через запятую (широта, долгота)");
+      return false;
+    }
 
-    this.result = [];
-    return validArr;
+    
+    const normalizedArr = arr.map((val) => this.normalizeMinus(val));
+
+    const isValidNumbers = normalizedArr.every((val) =>
+      this.isValidNumber(val)
+    );
+    if (!isValidNumbers) {
+      this.showTooltip(
+        "Допустимы только числовые параметры (например, 45.5, -120)"
+      );
+      return false;
+    }
+
+    const latitude = parseFloat(normalizedArr[0]);
+    const longitude = parseFloat(normalizedArr[1]);
+
+    if (latitude < -90 || latitude > 90) {
+      this.showTooltip("Широта должна быть в диапазоне от -90 до 90");
+      return false;
+    }
+
+    if (longitude < -180 || longitude > 180) {
+      this.showTooltip("Долгота должна быть в диапазоне от -180 до 180");
+      return false;
+    }
+
+    this.hideTooltip();
+    return arr; 
   }
 
   getValuesArr() {
-    let arr = this.inputEl.value.replace(/\[|\]/g, "");
-    arr = arr.split(",");
-
-    const notSpace = arr.map((elem) => elem.replaceAll(" ", ""));
-    return notSpace;
+    const value = this.inputEl.value.replace(/\[|\]/g, "");
+    const arr = value.split(",");
+    return arr.map((elem) => elem.trim());
   }
 
-  getAllowableValue(arr) {
-    arr.forEach((el) => {
-      const reg = /^-?[0-9][0-9,./]+$/.test(el);
-      this.result.push(reg);
-    });
-
-    const total = this.someValues(this.result);
-
-    if (total) {
-      this.showTooltip("Допустимы только числовые параметры");
-      this.result = [];
-
-      return false;
-    }
-    const validArr = this.getOverlapValue(arr);
-    if (validArr) {
-      document.querySelector(".tooltip-active").classList.add("hidden");
-
-      return arr;
-    }
+  normalizeMinus(str) {
+    return str.replace(/\u2212/g, "-"); 
   }
 
-  getOverlapValue(arr) {
-    if (arr.length <= 1 || arr.length > 2) {
-      this.showTooltip("Введите второй параметр через запятую");
-      return false;
-    }
-    if (arr[0].replace("-", "") > 90) {
-      this.showTooltip("Допустимые значения широты от -90 до 90");
-      return false;
-    }
-    if (arr[1].replace("-", "") > 180) {
-      this.showTooltip("Допустимые значения долготы -180 до 180");
-      return false;
-    }
-    document.querySelector(".tooltip-active").classList.add("hidden");
-
-    return arr;
+  isValidNumber(str) {
+    return /^[-\u2212]?\d+(\.\d+)?$/.test(str);
   }
 
   showTooltip(text) {
@@ -67,12 +61,8 @@ export default class Validator {
     tooltip.textContent = text;
   }
 
-  someValues(arr) {
-    const resultNum = arr.some((elem) => elem === false);
-
-    if (resultNum) {
-      return true;
-    }
-    return false;
+  hideTooltip() {
+    const tooltip = document.querySelector(".tooltip-active");
+    tooltip.classList.add("hidden");
   }
 }
